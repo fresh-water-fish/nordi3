@@ -1,0 +1,237 @@
+# --------------------------------
+# ---- Preferences ---------------
+# --------------------------------
+
+# Variables
+set $mod Mod4
+set $myTerm alacritty
+set $myBrowser firefox
+set $myGemini alacritty -e amfora
+set $myfm pcmanfm
+
+# workspace names and order
+set $ws1 "1:dev"
+set $ws2 "2:sys"
+set $ws3 "3:www"
+set $ws4 "4:gms"
+set $ws5 "5:cht"
+set $ws6 "6:spt"
+set $ws7 "7:msc"
+set $ws8 "8:###"
+set $ws9 "9:==="
+set $ws10 "10:vm"
+
+# Nord colourscheme
+    # Polar night colour palette
+    set $nord0 #2e3440
+    set $nord1 #3b4252
+    set $nord2 #434c5e
+    set $nord3 #4c566a
+
+    # Snow storm colour palette
+    set $nord4 #d8dee9
+    set $nord5 #e5e9f0
+    set $nord6 #eceff4
+
+    # Frost colour palette
+    set $nord7 #8fbcbb
+    set $nord8 #88c0d0
+    set $nord9 #81a1c1
+    set $nrd10 #5e81ac
+
+    # Aurora colour palette
+    set $nrd11 #bf616a
+    set $nrd12 #d08770
+    set $nrd13 #ebcb8b
+    set $nrd14 #a3be8c
+    set $nrd15 #b48ead
+
+# Font
+font pango:Source Code Pro 9
+
+# Autostart programs
+exec nitrogen --restore &
+exec redshift &
+
+# --------------------------------
+# ---- Keybinds ------------------
+# --------------------------------
+
+# reload the configuration file
+bindsym $mod+Control+c reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Control+r restart
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Control+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# kill focused window
+bindsym $mod+q kill
+
+# start programs
+    # start a terminal
+    bindsym $mod+Return exec $myTerm
+
+    # start dmenu
+    bindsym $mod+Shift+Return exec --no-startup-id dmenu_run -fn 'LiberationSerif Regular-14'
+
+    # start browser
+    bindsym $mod+b exec $myBrowser
+
+    # start gemini browser
+    bindsym $mod+Shift+b exec $myGemini
+
+    # start file manager
+    bindsym $mod+n exec $myfm
+
+# window management
+    # change focus
+    bindsym $mod+h focus left
+    bindsym $mod+j focus down
+    bindsym $mod+k focus up
+    bindsym $mod+l focus right
+
+    # move focused window
+    bindsym $mod+Shift+h move left
+    bindsym $mod+Shift+j move down
+    bindsym $mod+Shift+k move up
+    bindsym $mod+Shift+l move right
+
+    # toggle verticala and horizontal split
+    bindsym $mod+v split toggle
+
+    # enter fullscreen mode for the focused container
+    bindsym $mod+f fullscreen toggle
+
+    # change container layout (stacked, tabbed, toggle split)
+    bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
+
+    # drag floating windows
+    floating_modifier $mod
+
+    # toggle tiling / floating
+    bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# Workspace options
+
+    # switch to workspace
+    bindsym $mod+1 workspace $ws1
+    bindsym $mod+2 workspace $ws2
+    bindsym $mod+3 workspace $ws3
+    bindsym $mod+4 workspace $ws4
+    bindsym $mod+5 workspace $ws5
+    bindsym $mod+6 workspace $ws6
+    bindsym $mod+7 workspace $ws7
+    bindsym $mod+8 workspace $ws8
+    bindsym $mod+9 workspace $ws9
+    bindsym $mod+0 workspace $ws10
+
+    # move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace $ws1
+    bindsym $mod+Shift+2 move container to workspace $ws2
+    bindsym $mod+Shift+3 move container to workspace $ws3
+    bindsym $mod+Shift+4 move container to workspace $ws4
+    bindsym $mod+Shift+5 move container to workspace $ws5
+    bindsym $mod+Shift+6 move container to workspace $ws6
+    bindsym $mod+Shift+7 move container to workspace $ws7
+    bindsym $mod+Shift+8 move container to workspace $ws8
+    bindsym $mod+Shift+9 move container to workspace $ws9
+    bindsym $mod+Shift+0 move container to workspace $ws10
+
+    # automatically move these windows to workspace n
+    for_window [class="Spotify"] move to workspace $ws6
+    for_window [class="Steam"] move to workspace $ws4
+
+mode "open" {
+    # These bindings trigger in open mode and can quickly open a
+    # wider set of programs
+    bindsym d exec discord; mode "default"
+    bindsym g exec steam; mode "default"
+    bindsym s exec spotify; mode "default"
+    bindsym r exec kitty -e ranger; mode "default"
+
+    bindsym Escape mode "default"
+    bindsym $mod+o mode "default"
+}
+
+bindsym $mod+o mode "open"
+
+mode "resize" {
+    # These bindings trigger as soon as you enter the resize mode
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Media keys
+    set $refresh_i3status killall -SIGUSR1 i3status
+
+    # Volume control
+    bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+    bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+    bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+    bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+    # Playback controls
+    bindsym XF86AudioPause exec --no-startup-id playerctl play-pause
+    bindsym XF86AudioNext exec --no-startup-id playerctl next
+    bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+
+
+
+# --------------------------------
+# ---- i3 settings ---------------
+# --------------------------------
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# setting window borders
+default_border pixel 1
+
+# colour and borders        BORDER BACKGR TEXT   INDICAT CHILD_B
+client.focused              $nrd14 $nord3 $nord6 $nord6 $nord3
+client.focused_inactive     $nord0 $nord3 $nord6 $nrd11 $nord0
+client.unfocused            $nord0 $nord3 $nord6 $nrd11 $nord0
+client.urgent               $nrd11 $nrd11 $nord6 $nrd11 $nrd11
+client.placeholder          $nrd15 $nrd12 $nord6 $nrd15 $nrd12
+client.background           $nord0
+
+# --------------------------------
+# ---- i3bar ---------------------
+# --------------------------------
+bar {
+    status_command i3status
+    position top
+    strip_workspace_numbers yes
+    separator_symbol " "
+
+    colors {
+        background $nord0
+        statusline #000000
+        separator $nord4
+
+        # color of         BORDER BKGRND TXT
+        focused_workspace  $nord3 $nrd14 $nord0
+        active_workspace   $nord3 $nrd10 $nord0
+        inactive_workspace $nord0 $nord3 $nord6
+        urgent_workspace   $nord3 $nrd11 $nord6
+        binding_mode       $nord3 $nrd11 $nord6
+    }
+}
